@@ -1,0 +1,22 @@
+Få skärmen att fungera		x
+använd u8g2 biblioteket istället	x
+switcha ut reedswitchen till en hall sensor		x
+rpm grafik
+bensingrafik
+tripmätargrafik
+
+Lägg till knapp				x
+skapa NavigationManager		x
+ och scenes
+	navigera i scenmanager med kort knapptryck		x
+	långt knapptryck interagerar med aktuell scen		x
+scener
+	standard
+	tripmätare
+	varvräknare
+
+
+Grafik:
+	Main ( hastighet, bensin, tripmätare och varvräknare )
+	RPM - tydlig siffra. Bra för kalibrering
+	Total tripmätare.

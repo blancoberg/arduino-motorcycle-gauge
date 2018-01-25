@@ -1,0 +1,13 @@
+koppla till knapp till arduino.
+create tachometer
+create odometer
+  distance
+    total
+    current
+  speed
+  0-100 built in game
+    show 0-100 time
+      if time since total stop is less than 15 seconds
+
+
+förbered kablage för plug&play

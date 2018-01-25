@@ -1,0 +1,90 @@
+#include "Adafruit_HT1632.h"
+
+#define HT_DATA 2
+#define HT_WR   3
+#define HT_CS   4
+#define HT_CS2  5
+
+// use this line for single matrix
+Adafruit_HT1632LEDMatrix matrix = Adafruit_HT1632LEDMatrix(HT_DATA, HT_WR, HT_CS);
+
+// tweenio
+//////////////////////////////
+// Graphics for big numbers ///
+
+bool getBit(unsigned char byte, int position) // position in range 0-7
+{
+  return (byte >> position) & 0x1;
+}
+
+
+class MatrixElement {
+  public:
+    MatrixElement();
+    bool visible = true;
+    virtual void render(int px, int py);
+    virtual void addChild(MatrixElement* elem);
+    int x = 0;
+    int y = 0;
+    MatrixElement * children[10];
+
+
+};
+
+MatrixElement::MatrixElement() {
+  Serial.print("sdf");
+}
+void MatrixElement::addChild(MatrixElement* elem) {
+
+};
+
+void MatrixElement::render(int px, int py) {
+
+};
+
+
+
+class Counter : public MatrixElement {
+  public:
+    Counter() : MatrixElement() {};
+
+};
+
+
+
+
+
+
+
+
+
+
+
+MatrixElement stage;
+Counter counter;
+
+void setup() {
+
+
+  Serial.begin(9600);
+
+  matrix.begin(ADA_HT1632_COMMON_16NMOS);
+  stage.addChild(&counter);
+  //Serial.print(screen.buffer[1]);
+}
+
+void loop() {
+
+  matrix.clearScreen();
+
+  // draw elements //
+  stage.render(0, 0);
+  for (int i = 0; i < 50; i++) {
+    matrix.setPixel(random() % 24, random() % 16);
+  }
+  matrix.writeScreen();
+
+
+  delay(10);
+
+}
