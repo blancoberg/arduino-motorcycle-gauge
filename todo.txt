@@ -1,13 +1,17 @@
-koppla till knapp till arduino.
-create tachometer
-create odometer
-  distance
-    total
-    current
-  speed
-  0-100 built in game
+koppla till knapp till arduino.   x
+bensinmätare
+create tachometer   x
+create odometer   x
+  distance    x
+    total   x
+    current x
+  speed x
+  0-100 built in game x
     show 0-100 time
       if time since total stop is less than 15 seconds
 
 
 förbered kablage för plug&play
+
+lägg till röd led
+  blinkar när tachometer.rpm > 9000

@@ -16,7 +16,17 @@ scener
 	varvräknare
 
 
+Lägg till voltmätare för batteriet
+
+
 Grafik:
-	Main ( hastighet, bensin, tripmätare och varvräknare )
+	Main ( hastighet, bensin, tripmätare och varvräknare, batteri )
+  Total tripmätare.
 	RPM - tydlig siffra. Bra för kalibrering
-	Total tripmätare.
+	settings
+    wheel dimensions
+    magnets
+    engine
+      ignition coils
+      cylinders
+          if coils< cylinders = wasted spark ( spark every revolution) || spark every other
