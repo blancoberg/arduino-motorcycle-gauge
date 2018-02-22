@@ -6,7 +6,7 @@ namespace SceneManager{
   int currentScene = 0;
   
   unsigned long lastTime = millis();
-
+  unsigned long lastTimeFuel = millis();
   
   void next(){
     //Serial.println("next()");
@@ -36,9 +36,16 @@ namespace SceneManager{
           SceneMain::draw();  
       }
 
-
+      // read fuel level every 
       
+      if(millis() - lastTimeFuel   > 1000){
+
+        Fuelmeter::update();
+        lastTimeFuel = millis();
+      }
     }
+
+    
     
   }
 

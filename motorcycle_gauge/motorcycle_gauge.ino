@@ -41,9 +41,38 @@ U8G2_SSD1306_128X64_NONAME_F_4W_HW_SPI u8g2(U8G2_R0, /* cs=*/ PA2, /* dc=*/ PA1,
 
 
 namespace Fuelmeter{
-  
-  void init(int pin){
+
+  int fuelPin = 0;
+  int controlPin = 0;
+  int value = 0;
+  int resFull = 10;
+  int resEmpty = 100;
+  void update(){
+
+    digitalWrite(controlPin,HIGH);
+    //delay(100);
+    value = analogRead(fuelPin);
     
+    double voltageOut = (value/4095.0) * 3.3;
+    if(voltageOut==0)
+      voltageOut= 0.001;
+    double R1 = (3.3*50)/voltageOut - 50-30;
+
+    double proc = min(1,max(0,1.0-((R1-resFull)/(resEmpty-resFull))));
+    //double proc = (R1-resFull)/(resFull-resEmpty);
+    Serial.print("fuel resistance:");
+    Serial.println(R1);
+    Serial.print("fuel procent");
+    
+    value = proc*100;
+    Serial.println(value);
+    digitalWrite(controlPin,LOW);
+  }
+  
+  void init(int pin,int pinControl){
+    pinMode(pinControl,OUTPUT);
+    fuelPin = pin;
+    controlPin = pinControl;
   }
   
 }
@@ -57,14 +86,33 @@ namespace Tachometer {
 
   unsigned long lastTime = micros();
   int maxRPM = 5000;
-  int redLine = 400;
+  int redLine = 4000;
   int rpm = 0;
   double rpmSmooth = 0.0;
   double cosCounter = 0.0;
+  boolean state = false;
+  int coilPin = 0;
   void onCoilEvent(){
 
-      rpm = 1.0/ (   (micros()-lastTime)/1000000.0  ) * 60.0;
-      lastTime = micros();
+      
+      
+        int v = digitalRead(coilPin);
+
+        if(v == HIGH && state == false){
+          rpm = 1.0/ (   (micros()-lastTime)/1000000.0  ) * 60.0;
+          lastTime = micros();
+          state = true;
+        }
+
+        if(v == LOW && state == true){
+          state = false;
+        }
+        //Serial.print("time:");
+        //Serial.println(micros()-lastTime);
+        
+                                               
+
+     
       //rpm = random(0,maxRPM);
   }
 
@@ -74,10 +122,10 @@ namespace Tachometer {
       //Serial.println(cosCounter);
     //int v = digitalRead(PB12);
     //Serial.println(v);
-    cosCounter+=0.11;
+    //cosCounter+=0.11;
     //if(cosCounter>PI*2)
       //cosCounter = cosCounter-PI*2;
-
+  
     //rpm = (  (1+cos(cosCounter)  )/2) * maxRPM;
     rpmSmooth+=(rpm-rpmSmooth)/5.0;
     if(rpm> redLine){
@@ -97,9 +145,11 @@ namespace Tachometer {
   }
   
   void init(int pin){
-    //setPinMode(pin,INPUT);
+
+    coilPin = pin;
     //pinMode(pin,INPUT);
-    attachInterrupt(pin, onCoilEvent, FALLING);
+    //pinMode(pin,INPUT);
+    //attachInterrupt(pin, onCoilEvent, CHANGE);
   }
 
   

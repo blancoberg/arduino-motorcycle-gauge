@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      #canvas{
+
+        position:absolute;
+        left:0px;
+        top:0px;
+        background-color:#000000;
+        mage-rendering: optimizeSpeed;             /* Older versions of FF          */
+        image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+        image-rendering: -webkit-optimize-contrast; /* Safari                        */
+        image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+        image-rendering: pixelated;                 /* Awesome future-browsers       */
+        -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+        width:512px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="128" height="64" id="canvas"></canvas>
+
+
+    <script type="text/javascript">
+
+      var maxRpm = 12000;
+      var redline = 10000;
+      var rpm = 10000;
+      var counter = 0;
+      var oscillate = 0;
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+
+      //context.width=512;
+      //context.webkitImageSmoothingEnabled = false;
+      //context.mozImageSmoothingEnabled = false;
+
+
+      function setDrawColor(color){
+        context.strokeStyle = color == 1 ? "#ffffff" : "#000000";
+        context.fillStyle = color == 1 ? "#ffffff" : "#000000";
+      }
+
+      function drawBox(x,y,w,h){
+
+
+        context.fillRect(x,y,w,h);
+      }
+
+      function drawVLine(x,y,h){
+
+
+        context.lineWidth = 1;
+        context.beginPath();
+        context.moveTo(x+0.5,y);
+        context.lineTo(x+0.5,(y)+(h));
+        context.stroke();
+        context.closePath();
+
+      }
+
+      var u8g2 = {};
+      u8g2.setDrawColor = setDrawColor;
+      u8g2.drawBox = drawBox;
+      u8g2.drawVLine = drawVLine;
+
+
+      function drawRPM(){
+
+        var redLineStep = (redline)/1000;
+        oscillate+=0.1;
+        counter+=0.06;
+        rpm = maxRpm/2 + Math.sin(counter)* (maxRpm/2);
+        //console.log(this,maxRpm);
+        context.width = context.width;
+        canvas.width = canvas.width;
+
+        context.width=512;
+        context.webkitImageSmoothingEnabled = false;
+        context.mozImageSmoothingEnabled = false;
+
+        requestAnimationFrame(drawRPM);
+        var brickSize = Math.round(128/(maxRpm/1000)-1);
+        //brickSize-= brickSize;
+        u8g2.setDrawColor(1);
+        var bricks = rpm/1000;
+        var totalBricks = maxRpm/1000;
+
+
+        // draw bricks
+
+        for(var i = 0;i<totalBricks;i++){
+
+
+
+            var proc = Math.min(1,(rpm - 1000 * i)/1000);
+
+
+
+
+            if(rpm> (maxRpm)/1000 * (i) && i < bricks){
+
+              //draw boxes //
+              var maximumRpm = 1000*i + proc*1000;
+
+              if(i >= redLineStep){
+                // draw redline boxes //
+                u8g2.setDrawColor(counter*12.3 % 1 < 0.5 ? 0 : 1);
+              }else{
+                u8g2.setDrawColor(1);
+
+              }
+
+              u8g2.drawBox((brickSize+1) * i,11-i,Math.round((brickSize)*proc),2+i);
+
+
+            }else{
+
+              // draw markings
+              u8g2.drawVLine((brickSize+1) * i-1,13,-1);
+
+            }
+
+
+
+        }
+        //drawBox(0,10,brickSize,10);
+      }
+
+      (function(){
+        window.onload = function(){
+          drawRPM(3000,maxRpm,redline);
+        }
+
+      })()
+
+    </script>
+  </body>
+</html>
