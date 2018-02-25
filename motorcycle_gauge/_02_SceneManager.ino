@@ -29,6 +29,7 @@ namespace SceneManager{
       // just for graphics 
       Tachometer::update();
 
+      u8g2.clearBuffer();
        
       lastTime = millis();
       //Serial.println("draw");
@@ -44,6 +45,8 @@ namespace SceneManager{
         Fuelmeter::update();
         lastTimeFuel = millis();
       }
+
+      u8g2.sendBuffer();
     }
 
     

@@ -4,7 +4,7 @@ namespace SceneMain{
   void draw(){
     
     
-    u8g2.clearBuffer();
+    
     
     u8g2.setFont(u8g2_font_inb27_mn  );
     
@@ -43,7 +43,7 @@ namespace SceneMain{
     //u8g2.drawXBM( 0, 0, u8g_logo_width, u8g_logo_height, u8g_logo_bits);
     //u8g2.drawXBM(0,0,zephyr_width,zephyr_height,zephyr_bits);
     
-    u8g2.sendBuffer();
+    
 
     counter+=0.4;
     if(counter>PI*2)

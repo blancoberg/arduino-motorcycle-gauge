@@ -1,9 +1,15 @@
 #Gauges for motorcycle
-###Odometer
-###Tachometer
-###Fuelmeter
 
-##Parts needed
+
+###Functions
+
+* Speedometer
+* Tachometer
+* Fuelmeter
+* 0-60 timer
+*
+
+###Parts needed
 
 * 1 hall sensor
 * 2 4n35 optocouplers
@@ -14,5 +20,6 @@
 * stm32f1c8 or any arduino board
 * 1 diode
 * 128x64 display
+* 30x30cm acrylic plastic
 
-##Schematics
+###Schematics

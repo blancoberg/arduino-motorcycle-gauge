@@ -15,3 +15,29 @@ förbered kablage för plug&play
 
 lägg till röd led
   blinkar när tachometer.rpm > 9000
+
+
+
+
+Lägg till ny grafik för rpm
+lägg till scener
+  main
+    main graphic draw function()
+    drawSpeed();
+    drawRpm();
+    drawMini(header,value);
+    drawFuelLevel(x,y);
+
+
+  distance tot
+    action()
+      no action
+  tripmeter
+    action()
+      reset tripmeter
+  rpm value
+    action()
+
+  acceleration
+    action()
+      goto special screen
