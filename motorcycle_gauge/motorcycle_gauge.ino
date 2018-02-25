@@ -9,7 +9,7 @@
  * make drawing of the final board
  * attach wire connectors
  */
-
+#include <EEPROM.h>
 
 #include <U8g2lib.h>
 
@@ -60,12 +60,12 @@ namespace Fuelmeter{
 
     double proc = min(1,max(0,1.0-((R1-resFull)/(resEmpty-resFull))));
     //double proc = (R1-resFull)/(resFull-resEmpty);
-    Serial.print("fuel resistance:");
-    Serial.println(R1);
-    Serial.print("fuel procent");
+    //Serial.print("fuel resistance:");
+    //Serial.println(R1);
+    //Serial.print("fuel procent");
     
     value = proc*100;
-    Serial.println(value);
+    //Serial.println(value);
     digitalWrite(controlPin,LOW);
   }
   
@@ -85,39 +85,55 @@ namespace Fuelmeter{
 namespace Tachometer {
 
   unsigned long lastTime = micros();
-  int maxRPM = 5000;
-  int redLine = 4000;
+  int maxRPM = 600;
+  int redLine = 400;
   int rpm = 0;
   double rpmSmooth = 0.0;
   double cosCounter = 0.0;
   boolean state = false;
   int coilPin = 0;
+  bool locked = false;
+  int counter = 0;
+  
   void onCoilEvent(){
 
       
-      
-        int v = digitalRead(coilPin);
+            
+          
+          
+       
+            
+            if(locked == false){
 
-        if(v == HIGH && state == false){
-          rpm = 1.0/ (   (micros()-lastTime)/1000000.0  ) * 60.0;
-          lastTime = micros();
-          state = true;
-        }
-
-        if(v == LOW && state == true){
-          state = false;
-        }
-        //Serial.print("time:");
-        //Serial.println(micros()-lastTime);
+              locked = true;
+              rpm = 1.0/ (   (micros()-lastTime)/1000000.0  ) * 60.0;
+              lastTime = micros();
+              
+              locked = false;
+            }
+            counter++;
+            
+            
         
-                                               
-
-     
+          
+        
+        
+                                                 
+            
+          
       //rpm = random(0,maxRPM);
   }
 
   void update(){
 
+  if(counter>0){
+    Serial.print("tacho count:");
+    Serial.println(counter);
+    Serial.print("rpm:");
+    Serial.println(rpm);
+    counter = 0;
+  }
+    
     //Serial.println(digitalRead(PB11));
       //Serial.println(cosCounter);
     //int v = digitalRead(PB12);
@@ -127,7 +143,7 @@ namespace Tachometer {
       //cosCounter = cosCounter-PI*2;
   
     //rpm = (  (1+cos(cosCounter)  )/2) * maxRPM;
-    rpmSmooth+=(rpm-rpmSmooth)/5.0;
+    rpmSmooth+=(rpm-rpmSmooth)/5.0; 
     if(rpm> redLine){
       //double ledd = (   cos((micros()/1000000.0) * PI*15  )+1   )/2;
       //digitalWrite(12,round(ledd));
@@ -147,9 +163,9 @@ namespace Tachometer {
   void init(int pin){
 
     coilPin = pin;
-    //pinMode(pin,INPUT);
-    //pinMode(pin,INPUT);
-    //attachInterrupt(pin, onCoilEvent, CHANGE);
+    //pinMode(pin,DIGITAL);
+    pinMode(pin,INPUT);
+    attachInterrupt(coilPin, onCoilEvent, RISING);
   }
 
   

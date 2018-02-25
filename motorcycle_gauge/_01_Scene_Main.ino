@@ -9,6 +9,7 @@ namespace SceneMain{
     u8g2.setFont(u8g2_font_inb27_mn  );
     
     String speed = String(int(Odometer::speed));
+    //Serial.println(speed);
     int w = u8g2.getStrWidth(speed.c_str());
     
     u8g2.setCursor(128-w, 64);

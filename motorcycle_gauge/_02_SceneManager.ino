@@ -1,6 +1,7 @@
 namespace SceneManager{
 
   int pin = 0;
+  int powerPin = 0;
   double timer = 0;
   bool currentState = true;
   int currentScene = 0;
@@ -72,10 +73,19 @@ namespace SceneManager{
       SceneManager::currentState = true;
     }
   }
+
+  void onPower(){
+    //int v = digitalRead(powerPin);
+    Odometer::saveState();
+    //Serial.print("power=");
+    //Serial.println(v);
+  }
   
-  void init ( int pin ){
+  void init ( int pin ,int powerPin){
     SceneManager::pin = pin;
+    SceneManager::powerPin = powerPin;
     attachInterrupt(digitalPinToInterrupt(pin), onButton, CHANGE);
+    attachInterrupt(powerPin, onPower, CHANGE);
   }
 
   
