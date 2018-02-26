@@ -85,8 +85,8 @@ namespace Fuelmeter{
 namespace Tachometer {
 
   unsigned long lastTime = micros();
-  int maxRPM = 600;
-  int redLine = 400;
+  double maxRPM = 11000;
+  double redLine = 10000;
   int rpm = 0;
   double rpmSmooth = 0.0;
   double cosCounter = 0.0;

@@ -19,14 +19,15 @@ lägg till röd led
 
 
 
-Lägg till ny grafik för rpm
+Lägg till ny grafik för rpm     x
 lägg till scener
   main
     main graphic draw function()
-    drawSpeed();
-    drawRpm();
+      drawSpeed();
+      drawRpm();
+      drawFuelLevel(x,y);
     drawMini(header,value);
-    drawFuelLevel(x,y);
+
 
 
   distance tot
