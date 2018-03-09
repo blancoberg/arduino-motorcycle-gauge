@@ -18,27 +18,36 @@ lägg till röd led
 
 
 
-
+Ta bort test animation i tachometer.      x
+Testa hall sensor     x
+Lägg till ny hall sensor med pullup resistor
+lägg till kondensator och testa tach sensor hemma, debounca
+åk till Huddinge och testa fuel sensor och tach sensor
+löd ihop allt i ett kretskort
+bygg låda
 Lägg till ny grafik för rpm     x
+Ändra scener till klasser istället    x
 lägg till scener
   main
     main graphic draw function()
-      drawSpeed();
-      drawRpm();
-      drawFuelLevel(x,y);
-    drawMini(header,value);
+      drawSpeed();            x
+      drawRpm();              x
+      drawFuelLevel(x,y);     x
+    drawMini(header,value);   x
 
 
 
-  distance tot
-    action()
-      no action
-  tripmeter
-    action()
-      reset tripmeter
+  distance tot                 x
+    action()                    x
+      no action               x
+  tripmeter                     x
+    action()                  x
+      reset tripmeter         x
   rpm value
     action()
 
-  acceleration
+  acceleration                x
     action()
       goto special screen
+
+  save current scene          x

@@ -21,10 +21,10 @@
 
 namespace Odometer {
 
-  float distance = 0.0; //0.0f;//EEPROM.readDouble(2);
-  float tripMeter = 0.0;//EEPROM.readDouble(3);
+  double distance = 0.0; //0.0f;//EEPROM.readDouble(2);
+  double tripMeter = 0.0;//EEPROM.readDouble(3);
   
-  
+  double accelerationTime = 0;
   
   int amountOfMagnets = 1;                          // amount of magnets used on the wheel
   int wheelDiameter = 70;                           // wheel diameter in mm
@@ -61,8 +61,15 @@ namespace Odometer {
 
     
     distance = EEPROM_readDouble(0);
-    tripMeter = EEPROM_readDouble(4);
+    tripMeter = EEPROM_readDouble(8);
 
+
+    Serial.print(" distance =");
+    Serial.println(String(round(distance)));
+
+    Serial.print(" tripMeter =");
+    Serial.println(String(round(tripMeter)));
+    
     distance = isnan(distance) == true ? 0 : distance;
     tripMeter =  isnan(tripMeter) == true? 0 : tripMeter;
     
@@ -70,17 +77,12 @@ namespace Odometer {
   
   void saveState(){
 
-      if(millis()-lastSaved > 1000){
-        Serial.println("saving");
+      if(millis()-lastSaved > 1000){ // handle bouncing when power is switched off
         
-        //char* b = reinterpret_cast<char*>(distance);
-        //Serial.println(b);
+        
         u8g2.setPowerSave(1);
         EEPROM_writeDouble(0,distance);
-        //EEPROM.write(0,124);
-        //öööööööloiäkuäääääääääääääääääääääääääääääääääääääääääääääääääääääääääääääääääääääuuuuuuuuuuuuuuuuuuuuuuuEEPROM.write(4,100);
-        //EEPROM.update(0, distance);
-        //EEPROM.update(2, tripMeter);
+        EEPROM_writeDouble(8,tripMeter);
         lastSaved = millis();
       }
       
@@ -111,8 +113,13 @@ namespace Odometer {
           speedCounterStarted=true;
       }
 
+      if(speedCounterStarted == true){
+        accelerationTime = micros()-speedCounter;
+      }
+
       if(speed >= 100 && speedCounterStarted == true){
         speedCounterStarted = false;
+        accelerationTime = (micros()-speedCounter);
         //Serial.print(F("0-100 time:"));
         //Serial.println((micros()-speedCounter)/1000000);
       }
@@ -127,16 +134,7 @@ namespace Odometer {
       Odometer::lastTime = micros();
       state = true;
 
-      // save tripmeter data if time since last saved is more
-      // than 5 minutes and speed is less than 10km/h.
-
-      if(micros()-lastSaved > 300000000 && speed < 10){
-
-        lastSaved = micros();
-        //save();
-      }
-
-   
+     
 
 
   }
@@ -144,16 +142,12 @@ namespace Odometer {
   void init(int pin){
 
 
-    if(distance != distance || tripMeter != tripMeter){    // if NaN
-
-      tripMeter = 0;
-      distance = 54000000;
-    };
+    
 
 
     pinId = pin;
-    Serial.print(F("odometer.init"));
-    Serial.println(Odometer::distance);
+    //Serial.print(F("odometer.init"));
+    //Serial.println(Odometer::distance);
     pinMode(pinId,INPUT);
     attachInterrupt(digitalPinToInterrupt(pinId), onMagnet, FALLING);
 

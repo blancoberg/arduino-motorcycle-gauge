@@ -15,7 +15,7 @@
 
 ### Parts needed
 
-* 1 hall sensor
+* 1 US1881 hall sensor
 * 2 x 4n35 optocouplers
 * 1 555-timer
 * 50 ohm resistor
