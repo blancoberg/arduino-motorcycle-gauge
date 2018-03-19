@@ -80,7 +80,7 @@ namespace Odometer {
       if(millis()-lastSaved > 1000){ // handle bouncing when power is switched off
         
         
-        u8g2.setPowerSave(1);
+        //u8g2.setPowerSave(1);
         EEPROM_writeDouble(0,distance);
         EEPROM_writeDouble(8,tripMeter);
         lastSaved = millis();

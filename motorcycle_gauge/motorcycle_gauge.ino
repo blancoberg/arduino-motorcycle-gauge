@@ -128,7 +128,7 @@ namespace Tachometer {
 
   void update(){
 
-  
+    
     // reset rpm 
     if(micros()-lastTime > 500000){
       rpm = 0;

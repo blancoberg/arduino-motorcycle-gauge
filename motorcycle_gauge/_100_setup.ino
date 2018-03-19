@@ -2,6 +2,8 @@ void setup() {
   
   //analogWrite(A2,LOW);
   //Wire.setClock(700000);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN,HIGH);
   EEPROM.init();
   Serial.begin(9600);
   

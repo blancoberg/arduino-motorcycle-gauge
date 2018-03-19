@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+
+    body{
+  background-color:#00ff00;
+    }
+
+    @font-face {
+      font-family: "carolingia";
+      src: url("carolingia.ttf");
+    }
+
+    .counter{
+      font-family:"carolingia";
+      color:#000000;
+      font-size:100px;
+      width:150px;
+      padding-top:10px;
+      padding-bottom:10px;
+
+      text-align:center;
+    }
+    </style>
+
+  </head>
+  <body>
+    <div id="counter1" class="counter">
+
+    </div>
+
+    <div id="counter2" class="counter">
+
+    </div>
+
+    <script type="text/javascript">
+
+      function Counter(id,keys){
+
+        this.dom = document.getElementById(id);
+        this.keys = keys;
+        this.value = 0;
+        this.draw();
+
+        window.addEventListener("keypress",this.onKeyPress.bind(this))
+
+      }
+
+      Counter.prototype.onKeyPress = function(e){
+
+        if(this.keys[e.key]){
+          this.value+=this.keys[e.key];
+          this.value = this.value<0  ? 0 : this.value;
+          this.draw();
+        }
+
+      }
+
+      Counter.prototype.draw = function(){
+        this.dom.innerHTML = this.value;
+      }
+
+      new Counter("counter1",{
+        "u" : -1,
+        "i" : 1
+      });
+      new Counter("counter2",{
+        "j" : -1,
+        "k" : 1
+      });
+
+    </script>
+  </body>
+</html>
