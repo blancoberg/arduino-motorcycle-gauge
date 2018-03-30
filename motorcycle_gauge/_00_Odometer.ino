@@ -148,7 +148,8 @@ namespace Odometer {
     pinId = pin;
     //Serial.print(F("odometer.init"));
     //Serial.println(Odometer::distance);
-    pinMode(pinId,INPUT);
+    
+   // pinMode(pinId,INPUT);
     attachInterrupt(digitalPinToInterrupt(pinId), onMagnet, FALLING);
 
 

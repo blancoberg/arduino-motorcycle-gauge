@@ -145,7 +145,7 @@ namespace Tachometer {
     coilPin = pin;
     //pinMode(pin,DIGITAL);
     //pinMode(pin,INPUT);
-    attachInterrupt(coilPin, onCoilEvent, RISING);
+    attachInterrupt(digitalPinToInterrupt(coilPin), onCoilEvent, RISING);
   }
 
   

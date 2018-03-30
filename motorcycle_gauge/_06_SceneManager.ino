@@ -1,5 +1,6 @@
 namespace SceneManager {
 
+int counter = 0;
 int battery = 0;
 int pin = 0;
 int powerPin = 0;
@@ -9,6 +10,9 @@ int currentScene = 0;
 bool interrupted = false;
 unsigned long lastTime = millis();
 unsigned long lastTimeFuel = millis();
+int x = 0;
+
+
 
 // SCENES
 
@@ -16,6 +20,7 @@ AbstractScene* sceneTrip = new SceneTrip();
 AbstractScene* sceneTripTotal = new SceneTripTotal();
 AbstractScene* sceneTimer = new SceneTimer();
 AbstractScene* sceneRpm = new SceneRpm();
+
 //AbstractScene* sceneBattery = new SceneBattery();
 
 AbstractScene* scenes[4] = {sceneTrip, sceneTripTotal, sceneTimer, sceneRpm};
@@ -61,7 +66,7 @@ void draw() {
 
     if (millis() - lastTimeFuel   > 1000) {
 
-      Batterymeter::update();
+      //Batterymeter::update();
       Fuelmeter::update();
       lastTimeFuel = millis();
       if (interrupted == true) {
@@ -78,6 +83,9 @@ void draw() {
 
     scenes[currentScene]->draw();
 
+
+    // draw bitmap
+    
     // read fuel level && battery
 
 
@@ -93,6 +101,7 @@ void draw() {
 
 void onButton() {
   //Serial.print("button ");
+  counter++;
   double _time = millis() - timer;
   int state = digitalRead(SceneManager::pin);
   if (state == 0 && SceneManager::currentState == true) {
@@ -118,11 +127,13 @@ void onPower() {
   //int v = digitalRead(powerPin);
   //Odometer::saveState();
   //SceneManager::saveState();
-  int power = digitalRead(powerPin);
-  if (power == LOW && interrupted == false) {
+  //int power = digitalRead(powerPin);
+  if (interrupted == false) {
     //Serial.print("LOW!!");
     digitalWrite(LED_BUILTIN, LOW);
     interrupted = true;
+    Odometer::saveState();
+    SceneManager::saveState();
   }
   //Serial.print("power=");
   //Serial.println(power);
@@ -132,7 +143,7 @@ void init ( int pin , int powerPin) {
   SceneManager::pin = pin;
   SceneManager::powerPin = powerPin;
   attachInterrupt(digitalPinToInterrupt(pin), onButton, CHANGE);
-  attachInterrupt(powerPin, onPower, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(powerPin), onPower, FALLING);
 }
 
 
